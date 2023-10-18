@@ -1,22 +1,20 @@
 <script lang="ts">
 	import { Search, CloudRain, Snowflake, Cloudy, Droplet, Wind, CloudCog } from 'lucide-svelte';
+	export let data;
 
-	const apiKey = '9ab588f117ec59b8109d0dfe04c8c658';
-	let apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric';
-
-	let errBool = false;
-
-	let locationValue: string = '';
-
-	let temp: number; // Initialize temp to 0
 	let location: string;
+	let locationValue = '';
+	let icon = '';
+	let errBool: boolean;
+	let temp: number;
 	let humidity: number;
 	let windSpeed: number;
 
-	let icon = '';
+	const apikey = data.apikey;
+	const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric';
 
-	async function checkWeather(locate: string) {
-		const res = await fetch(`${apiUrl}&q=${locate}&appid=${apiKey}`);
+	async function fetchWeather(locate: string) {
+		const res = await fetch(`${apiUrl}&q=${locate}&appid=${apikey}`);
 		if (res.status != 200) {
 			errBool = true;
 			console.log(res.status);
@@ -36,7 +34,7 @@
 
 	function handleSubmit(event: Event) {
 		event.preventDefault(); // Prevent the form's default behavior
-		checkWeather(locationValue);
+		fetchWeather(locationValue);
 	}
 
 	$: {
